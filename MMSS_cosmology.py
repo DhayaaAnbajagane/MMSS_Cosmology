@@ -65,14 +65,14 @@ def Our_Universe(a_start = 1e-7, a_end = 1e2, Omega_m = 0.3, Omega_r = 2e-5, Ome
     Omega_R = Omega_X(a, Omega_r, lambda x: w_r)
     Omega_L = Omega_X(a, Omega_L,  lambda x: w_Lambda)
 
-    Normalize = (Omega_M + Omega_R + Omega_L)
+    Sum = Omega_m + Omega_r + Omega_L
 
     print("-----------------------")
     print("Our Initial Conditions")
     print("-----------------------")
-    print("Omega_m:%0.2f", Omega_M/Normalize)
-    print("Omega_r:%0.2f", Omega_R/Normalize)
-    print("Omega_Lambda:%0.2f", Omega_L/Normalize)
+    print("Omega_m:%0.2f"%Omega_m/Sum)
+    print("Omega_r:%0.2f"%Omega_r/Sum)
+    print("Omega_Lambda:%0.2f"%Omega_L/Sum)
 
     plt.rc('xtick',labelsize=22)
     plt.rc('ytick',labelsize=22)
@@ -109,13 +109,15 @@ def New_Universe(w_new, Omega_new, a_start = 1e-7, a_end = 1e2, Omega_m = 0.3, O
 
     Normalize = (Omega_M + Omega_R + Omega_L + Omega_new)
 
+    Sum = Omega_m + Omega_r + Omega_L + Omega_new
+
     print("-----------------------")
     print("Our Initial Conditions")
     print("-----------------------")
-    print("Omega_m:%0.2f", Omega_M/Normalize)
-    print("Omega_r:%0.2f", Omega_R/Normalize)
-    print("Omega_Lambda:%0.2f", Omega_L/Normalize)
-    print("Omega_new:%0.2f", Omega_new/Normalize)
+    print("Omega_m:%0.2f"%Omega_m/Sum)
+    print("Omega_r:%0.2f"%Omega_r/Sum)
+    print("Omega_L:%0.2f"%Omega_L/Sum)
+    print("Omega_new:%0.2f"%Omega_new/Sum)
 
     plt.rc('xtick',labelsize=22)
     plt.rc('ytick',labelsize=22)
