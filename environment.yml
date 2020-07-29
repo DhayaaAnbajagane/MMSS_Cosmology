@@ -1,0 +1,6 @@
+name: MMSS_enviroment
+channels:
+  - conda-forge
+dependencies:
+  - numpy
+  - matplotlib
