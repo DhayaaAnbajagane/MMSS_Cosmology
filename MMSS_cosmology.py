@@ -57,22 +57,24 @@ def Hubble(list_of_Omegas):
 
     return H0*np.sqrt(np.sum(list_of_Omegas, axis = 0))
 
-def Our_Universe(a_start = 1e-7, a_end = 1e2, Omega_m = 0.3, Omega_r = 2e-5, Omega_L = 0.7, w_m = 0, w_r = 1/3, w_Lambda = -1):
+def Our_Universe(a_start = 1e-7, a_end = 1e2, Omega_m = 0.3, Omega_r = 2e-5, Omega_l = 0.7, w_m = 0, w_r = 0.33, w_Lambda = -1):
 
     a = np.geomspace(a_start, a_end, 500, endpoint=True)
 
     Omega_M = Omega_X(a, Omega_m,  lambda x: w_m)
     Omega_R = Omega_X(a, Omega_r, lambda x: w_r)
-    Omega_L = Omega_X(a, Omega_L,  lambda x: w_Lambda)
+    Omega_L = Omega_X(a, Omega_l,  lambda x: w_Lambda)
 
-    Sum = Omega_m + Omega_r + Omega_L
+    Normalize = (Omega_M + Omega_R + Omega_L)
+
+    Sum = Omega_m + Omega_r + Omega_l
 
     print("-----------------------")
     print("Our Initial Conditions")
     print("-----------------------")
-    print("Omega_m:%0.2f"%(Omega_m/Sum))
-    print("Omega_r:%0.2f"%(Omega_r/Sum))
-    print("Omega_L:%0.2f"%(Omega_L/Sum))
+    print("Omega_m : %0.2f"%(Omega_m/Sum))
+    print("Omega_r : %0.2f"%(Omega_r/Sum))
+    print("Omega_L : %0.2f"%(Omega_l/Sum))
 
     plt.rc('xtick',labelsize=22)
     plt.rc('ytick',labelsize=22)
@@ -89,35 +91,36 @@ def Our_Universe(a_start = 1e-7, a_end = 1e2, Omega_m = 0.3, Omega_r = 2e-5, Ome
     axes[0].legend(fontsize = 20)
     axes[0].set_ylabel(r'$\Omega_i(a)$', size = 30)
     axes[0].grid()
+    axes[0].axvline(1, alpha = 0.3, lw = 2, ls = '--', c = 'k')
 
     list_of_Omegas = np.array([Omega_M, Omega_R, Omega_L])
     axes[1].plot(a, Hubble(list_of_Omegas), lw = 3, alpha = 1, color = 'C6')
 
-    axes[1].legend(fontsize = 24)
     axes[1].set_ylabel(r'$H(a)$', size = 30)
     axes[1].set_xlabel(r'$a$', size = 30)
     axes[1].grid()
+    axes[1].axvline(1, alpha = 0.3, lw = 2, ls = '--', c = 'k')
 
-def New_Universe(w_new, Omega_new, a_start = 1e-7, a_end = 1e2, Omega_m = 0.3, Omega_r = 2e-5, Omega_L = 0.7, w_m = 0, w_r = 1/3, w_Lambda = -1):
+def New_Universe(w_new, Omega_new, name = 'new', a_start = 1e-7, a_end = 1e2, Omega_m = 0.3, Omega_r = 2e-5, Omega_l = 0.7, w_m = 0, w_r = 0.33, w_Lambda = -1):
 
     a = np.geomspace(a_start, a_end, 500, endpoint=True)
 
     Omega_M = Omega_X(a, Omega_m,  lambda x: w_m)
     Omega_R = Omega_X(a, Omega_r,  lambda x: w_r)
-    Omega_L = Omega_X(a, Omega_L,  lambda x: w_Lambda)
-    Omega_new = Omega_X(a, Omega_new, w_new)
+    Omega_L = Omega_X(a, Omega_l,  lambda x: w_Lambda)
+    Omega_New = Omega_X(a, Omega_new, w_new)
 
-    Normalize = (Omega_M + Omega_R + Omega_L + Omega_new)
+    Normalize = (Omega_M + Omega_R + Omega_L + Omega_New)
 
-    Sum = Omega_m + Omega_r + Omega_L + Omega_new
+    Sum = Omega_m + Omega_r + Omega_l + Omega_new
 
     print("-----------------------")
     print("Our Initial Conditions")
     print("-----------------------")
-    print("Omega_m:%0.2f"%(Omega_m/Sum))
-    print("Omega_r:%0.2f"%(Omega_r/Sum))
-    print("Omega_L:%0.2f"%(Omega_L/Sum))
-    print("Omega_new:%0.2f"%(Omega_new/Sum))
+    print("Omega_m : %0.2f"%(Omega_m/Sum))
+    print("Omega_r : %0.2f"%(Omega_r/Sum))
+    print("Omega_L : %0.2f"%(Omega_l/Sum))
+    print("Omega_" + name + ": %0.2f"%(Omega_new/Sum))
 
     plt.rc('xtick',labelsize=22)
     plt.rc('ytick',labelsize=22)
@@ -130,17 +133,17 @@ def New_Universe(w_new, Omega_new, a_start = 1e-7, a_end = 1e2, Omega_m = 0.3, O
     axes[0].plot(a, Omega_M/Normalize, lw = 2, label = r'$\Omega_m,\, w = ' + str(w_m) + '$')
     axes[0].plot(a, Omega_R/Normalize, lw = 2, label = r'$\Omega_r,\, w = ' + str(w_r) + '$')
     axes[0].plot(a, Omega_L/Normalize, lw = 2, label = r'$\Omega_\Lambda,\, w = ' + str(w_Lambda) + '$')
-    axes[0].plot(a, Omega_new/Normalize, lw = 2, label = r'$\Omega_{\rm new}$')
+    axes[0].plot(a, Omega_New/Normalize, lw = 2, label = r'$\Omega_{\rm ' + name + '}$')
 
     axes[0].legend(fontsize = 20)
     axes[0].set_ylabel(r'$\Omega_i(a)$', size = 30)
     axes[0].grid()
 
     list_of_Omegas = np.array([Omega_M, Omega_R, Omega_L])
-    axes[1].plot(a, Hubble(list_of_Omegas), lw = 3, label = r'Normal', alpha = 0.3, color = 'C4')
+    axes[1].plot(a, Hubble(list_of_Omegas), lw = 3, label = r'Normal Universe', alpha = 0.3, color = 'C4')
 
-    list_of_Omegas = np.array([Omega_M, Omega_R, Omega_L, Omega_new])
-    axes[1].plot(a, Hubble(list_of_Omegas), lw = 3, label = r'New!', color = 'C6')
+    list_of_Omegas = np.array([Omega_M, Omega_R, Omega_L, Omega_New])
+    axes[1].plot(a, Hubble(list_of_Omegas), lw = 3, label = r'The ' + name + ' Universe!', color = 'C6')
 
     axes[1].legend(fontsize = 24)
     axes[1].set_ylabel(r'$H(a)$', size = 30)
